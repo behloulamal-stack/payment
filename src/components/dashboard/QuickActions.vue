@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
@@ -34,8 +35,15 @@ function navigate(to: string) {
 <template>
   <div>
     <div class="section-header">
-      <h2>Quick Actions</h2>
-      <span>Manage your money</span>
+      <div>
+        <h2>
+          Quick Actions
+        </h2>
+
+        <span>
+          Manage your money
+        </span>
+      </div>
     </div>
 
     <div class="actions-grid">
@@ -44,13 +52,19 @@ function navigate(to: string) {
         :key="action.to"
         class="action-card"
         rounded="xl"
+        elevation="0"
         @click="navigate(action.to)"
       >
         <div class="action-icon">
-          <v-icon :icon="action.icon" size="22" />
+          <v-icon
+            :icon="action.icon"
+            size="22"
+          />
         </div>
 
-        <span>{{ action.title }}</span>
+        <span class="action-title">
+          {{ action.title }}
+        </span>
 
         <v-icon
           icon="mdi-chevron-right"
@@ -71,36 +85,45 @@ function navigate(to: string) {
 }
 
 .section-header h2 {
+  margin: 0;
   font-size: 17px;
+  font-weight: 700;
   color: #111827;
 }
 
 .section-header span {
+  display: block;
+  margin-top: 3px;
   font-size: 12px;
   color: #9ca3af;
 }
 
 .actions-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
 .action-card {
-  position: relative;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 18px;
   cursor: pointer;
-  transition: 0.2s ease;
+  border: 1px solid #eef0f4;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .action-card:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06) !important;
 }
 
 .action-icon {
+  flex: 0 0 auto;
   width: 42px;
   height: 42px;
   border-radius: 12px;
@@ -111,14 +134,64 @@ function navigate(to: string) {
   background: rgba(var(--v-theme-primary), 0.1);
 }
 
-.action-card span {
+.action-title {
+  min-width: 0;
+  overflow: hidden;
   font-size: 13px;
   font-weight: 600;
   color: #374151;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .action-arrow {
+  flex: 0 0 auto;
   margin-left: auto;
   color: #9ca3af;
+}
+
+/* Tablet */
+
+@media (max-width: 1000px) {
+  .actions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .section-header {
+    margin-bottom: 12px;
+  }
+
+  .section-header h2 {
+    font-size: 16px;
+  }
+
+  .actions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .action-card {
+    min-height: 76px;
+    padding: 14px;
+    gap: 9px;
+  }
+
+  .action-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .action-title {
+    font-size: 12px;
+  }
+
+  .action-arrow {
+    display: none;
+  }
 }
 </style>

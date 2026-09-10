@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
@@ -30,6 +31,8 @@ function handleWithdraw() {
 
 <template>
   <div class="dashboard-page">
+
+    <!-- Wallet -->
     <template v-if="walletStore.wallet">
       <BalanceCard
         :wallet="walletStore.wallet"
@@ -39,36 +42,69 @@ function handleWithdraw() {
 
       <StatsCards
         :wallet="walletStore.wallet"
-        class="mt-5"
+        class="section-spacing"
       />
     </template>
 
-    <div v-else class="loading-container">
+    <!-- Loading -->
+    <div
+      v-else
+      class="loading-container"
+    >
       <v-progress-circular
         color="primary"
         indeterminate
+        size="40"
       />
     </div>
 
-    <QuickActions class="mt-6" />
+    <!-- Quick Actions -->
+    <QuickActions class="section-spacing" />
 
+    <!-- Recent Transactions -->
     <RecentTransactions
       :transactions="transactionStore.transactions"
-      class="mt-6"
+      class="section-spacing"
     />
+
   </div>
 </template>
 
 <style scoped>
 .dashboard-page {
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
 }
+
+/* Sections */
+
+.section-spacing {
+  margin-top: 24px !important;
+}
+
+/* Loading */
 
 .loading-container {
   min-height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .dashboard-page {
+    width: 100%;
+  }
+
+  .section-spacing {
+    margin-top: 16px !important;
+  }
+
+  .loading-container {
+    min-height: 180px;
+  }
 }
 </style>

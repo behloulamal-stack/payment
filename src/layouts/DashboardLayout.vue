@@ -35,6 +35,21 @@ import AppTopbar from '@/components/common/AppTopbar.vue'
 
 .page-content {
   flex: 1;
+  width: 100%;
   padding: 32px;
+}
+
+/* Tablet */
+@media (max-width: 960px) {
+  .page-content {
+    padding: 24px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .page-content {
+    padding: 20px 16px;
+  }
 }
 </style>

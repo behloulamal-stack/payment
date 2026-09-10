@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -24,30 +23,28 @@ onMounted(() => {
 const filteredTransactions = computed(() => {
   const query = search.value.toLowerCase().trim()
 
-  return transactionStore.transactions.filter(
-    (transaction) => {
-      const matchesSearch =
-        !query ||
-        transaction.id.toLowerCase().includes(query) ||
-        transaction.description.toLowerCase().includes(query) ||
-        transaction.recipient?.toLowerCase().includes(query) ||
-        transaction.sender?.toLowerCase().includes(query)
+  return transactionStore.transactions.filter((transaction) => {
+    const matchesSearch =
+      !query ||
+      transaction.id.toLowerCase().includes(query) ||
+      transaction.description.toLowerCase().includes(query) ||
+      transaction.recipient?.toLowerCase().includes(query) ||
+      transaction.sender?.toLowerCase().includes(query)
 
-      const matchesType =
-        typeFilter.value === 'all' ||
-        transaction.type === typeFilter.value
+    const matchesType =
+      typeFilter.value === 'all' ||
+      transaction.type === typeFilter.value
 
-      const matchesStatus =
-        statusFilter.value === 'all' ||
-        transaction.status === statusFilter.value
+    const matchesStatus =
+      statusFilter.value === 'all' ||
+      transaction.status === statusFilter.value
 
-      return (
-        matchesSearch &&
-        matchesType &&
-        matchesStatus
-      )
-    },
-  )
+    return (
+      matchesSearch &&
+      matchesType &&
+      matchesStatus
+    )
+  })
 })
 
 function formatAmount(transaction: Transaction) {
@@ -100,7 +97,7 @@ function openTransaction(transaction: Transaction) {
 
     <!-- HEADER -->
     <div class="page-header">
-      <div>
+      <div class="header-content">
         <h2>Transactions</h2>
 
         <p>
@@ -112,6 +109,7 @@ function openTransaction(transaction: Transaction) {
         color="primary"
         prepend-icon="mdi-send-outline"
         to="/transfer"
+        class="send-button"
       >
         Send Money
       </v-btn>
@@ -124,6 +122,7 @@ function openTransaction(transaction: Transaction) {
     >
       <div class="filters">
 
+        <!-- SEARCH -->
         <v-text-field
           v-model="search"
           placeholder="Search transactions..."
@@ -133,6 +132,7 @@ function openTransaction(transaction: Transaction) {
           class="search-field"
         />
 
+        <!-- TYPE -->
         <v-select
           v-model="typeFilter"
           :items="[
@@ -146,6 +146,7 @@ function openTransaction(transaction: Transaction) {
           class="filter-field"
         />
 
+        <!-- STATUS -->
         <v-select
           v-model="statusFilter"
           :items="[
@@ -169,9 +170,10 @@ function openTransaction(transaction: Transaction) {
       class="transactions-card"
     >
 
+      <!-- CARD HEADER -->
       <div class="table-header">
 
-        <div>
+        <div class="table-title">
           <h3>Transaction History</h3>
 
           <span>
@@ -193,7 +195,9 @@ function openTransaction(transaction: Transaction) {
           indeterminate
         />
 
-        <span>Loading transactions...</span>
+        <span>
+          Loading transactions...
+        </span>
       </div>
 
       <!-- EMPTY -->
@@ -208,7 +212,9 @@ function openTransaction(transaction: Transaction) {
           />
         </div>
 
-        <h3>No transactions found</h3>
+        <h3>
+          No transactions found
+        </h3>
 
         <p>
           Try changing your search or filters.
@@ -283,6 +289,7 @@ function openTransaction(transaction: Transaction) {
             {{ formatAmount(transaction) }}
           </div>
 
+          <!-- ARROW -->
           <v-icon
             icon="mdi-chevron-right"
             size="18"
@@ -299,30 +306,56 @@ function openTransaction(transaction: Transaction) {
 </template>
 
 <style scoped>
+/* ========================================
+   PAGE
+======================================== */
+
 .transactions-page {
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
 }
+
+/* ========================================
+   HEADER
+======================================== */
 
 .page-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+
+  gap: 20px;
   margin-bottom: 24px;
+}
+
+.header-content {
+  min-width: 0;
 }
 
 .page-header h2 {
   margin: 0;
+
   font-size: 24px;
   font-weight: 700;
+
   color: #111827;
 }
 
 .page-header p {
   margin: 6px 0 0;
+
   font-size: 13px;
   color: #9ca3af;
 }
+
+.send-button {
+  flex-shrink: 0;
+}
+
+/* ========================================
+   FILTERS
+======================================== */
 
 .filters-card {
   padding: 18px;
@@ -331,41 +364,57 @@ function openTransaction(transaction: Transaction) {
 
 .filters {
   display: grid;
-  grid-template-columns: 1fr 200px 200px;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    200px
+    200px;
+
   gap: 12px;
 }
 
-.search-field {
-  min-width: 0;
-}
-
+.search-field,
 .filter-field {
   min-width: 0;
 }
 
+/* ========================================
+   TRANSACTIONS CARD
+======================================== */
+
 .transactions-card {
+  width: 100%;
   overflow: hidden;
 }
 
 .table-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+
   padding: 22px;
 }
 
-.table-header h3 {
+.table-title h3 {
   margin: 0;
+
   font-size: 16px;
+  font-weight: 600;
+
   color: #111827;
 }
 
-.table-header span {
+.table-title span {
   display: block;
+
   margin-top: 4px;
+
   font-size: 12px;
   color: #9ca3af;
 }
+
+/* ========================================
+   TRANSACTION LIST
+======================================== */
 
 .transaction-list {
   width: 100%;
@@ -373,6 +422,7 @@ function openTransaction(transaction: Transaction) {
 
 .transaction-row {
   display: grid;
+
   grid-template-columns:
     44px
     minmax(180px, 1fr)
@@ -383,6 +433,7 @@ function openTransaction(transaction: Transaction) {
     24px;
 
   align-items: center;
+
   gap: 16px;
 
   padding: 16px 22px;
@@ -392,7 +443,7 @@ function openTransaction(transaction: Transaction) {
   cursor: pointer;
 
   transition:
-    background 0.2s ease,
+    background-color 0.2s ease,
     transform 0.2s ease;
 }
 
@@ -403,6 +454,10 @@ function openTransaction(transaction: Transaction) {
 .transaction-row:hover {
   background: #fafaff;
 }
+
+/* ========================================
+   ICON
+======================================== */
 
 .transaction-icon {
   width: 42px;
@@ -425,6 +480,10 @@ function openTransaction(transaction: Transaction) {
   background: #fef2f2;
 }
 
+/* ========================================
+   INFO
+======================================== */
+
 .transaction-info {
   min-width: 0;
 
@@ -433,8 +492,11 @@ function openTransaction(transaction: Transaction) {
 }
 
 .transaction-info strong {
+  min-width: 0;
+
   font-size: 13px;
   font-weight: 600;
+
   color: #374151;
 
   overflow: hidden;
@@ -443,9 +505,12 @@ function openTransaction(transaction: Transaction) {
 }
 
 .transaction-info span {
+  min-width: 0;
+
   margin-top: 4px;
 
   font-size: 11px;
+
   color: #9ca3af;
 
   overflow: hidden;
@@ -453,24 +518,56 @@ function openTransaction(transaction: Transaction) {
   white-space: nowrap;
 }
 
+/* ========================================
+   CATEGORY
+======================================== */
+
+.transaction-category {
+  min-width: 0;
+}
+
 .transaction-category span {
   font-size: 12px;
   color: #6b7280;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
+/* ========================================
+   DATE
+======================================== */
 
 .transaction-date {
   font-size: 12px;
   color: #6b7280;
+
+  white-space: nowrap;
 }
+
+/* ========================================
+   STATUS
+======================================== */
 
 .transaction-status {
   display: flex;
+  min-width: 0;
 }
 
+/* ========================================
+   AMOUNT
+======================================== */
+
 .transaction-amount {
+  min-width: 0;
+
   text-align: right;
+
   font-size: 13px;
   font-weight: 600;
+
+  white-space: nowrap;
 }
 
 .transaction-amount.income {
@@ -481,9 +578,19 @@ function openTransaction(transaction: Transaction) {
   color: #dc2626;
 }
 
+/* ========================================
+   ARROW
+======================================== */
+
 .row-arrow {
   color: #c4c7d0;
+
+  flex-shrink: 0;
 }
+
+/* ========================================
+   LOADING / EMPTY
+======================================== */
 
 .loading-state,
 .empty-state {
@@ -518,25 +625,25 @@ function openTransaction(transaction: Transaction) {
 
 .empty-state h3 {
   margin: 4px 0 0;
-  color: #374151;
+
   font-size: 16px;
+
+  color: #374151;
 }
 
 .empty-state p {
   margin: 0;
-  color: #9ca3af;
+
   font-size: 12px;
+
+  color: #9ca3af;
 }
 
-@media (max-width: 1000px) {
-  .filters {
-    grid-template-columns: 1fr 1fr;
-  }
+/* ========================================
+   TABLET
+======================================== */
 
-  .search-field {
-    grid-column: 1 / -1;
-  }
-
+@media (max-width: 1100px) {
   .transaction-row {
     grid-template-columns:
       44px
@@ -552,24 +659,83 @@ function openTransaction(transaction: Transaction) {
   }
 }
 
-@media (max-width: 600px) {
-  .page-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 16px;
+/* ========================================
+   SMALL TABLET
+======================================== */
+
+@media (max-width: 800px) {
+  .filters {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .page-header .v-btn {
+  .search-field {
+    grid-column: 1 / -1;
+  }
+
+  .transaction-row {
+    padding: 15px 18px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+
+  /* Header */
+
+  .page-header {
+    align-items: stretch;
+
+    flex-direction: column;
+
+    gap: 16px;
+
+    margin-bottom: 18px;
+  }
+
+  .page-header h2 {
+    font-size: 21px;
+  }
+
+  .page-header p {
+    font-size: 12px;
+  }
+
+  .send-button {
     width: 100%;
+  }
+
+  /* Filters */
+
+  .filters-card {
+    padding: 12px;
+
+    margin-bottom: 16px;
   }
 
   .filters {
     grid-template-columns: 1fr;
+
+    gap: 10px;
   }
 
   .search-field {
     grid-column: auto;
   }
+
+  /* Card header */
+
+  .table-header {
+    padding: 18px 16px;
+  }
+
+  .table-title h3 {
+    font-size: 15px;
+  }
+
+  /* Transaction */
 
   .transaction-row {
     grid-template-columns:
@@ -579,14 +745,78 @@ function openTransaction(transaction: Transaction) {
       18px;
 
     gap: 10px;
+
+    padding: 14px 16px;
   }
 
+  .transaction-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .transaction-info strong {
+    font-size: 12px;
+  }
+
+  .transaction-info span {
+    font-size: 10px;
+  }
+
+  /* Hide information that doesn't fit mobile */
+
+  .transaction-category,
+  .transaction-date,
   .transaction-status {
     display: none;
   }
 
   .transaction-amount {
-    font-size: 12px;
+    font-size: 11px;
+  }
+
+  .row-arrow {
+    font-size: 17px !important;
+  }
+
+  /* Empty / Loading */
+
+  .loading-state,
+  .empty-state {
+    min-height: 240px;
+
+    padding: 20px;
+  }
+}
+
+/* ========================================
+   VERY SMALL MOBILE
+======================================== */
+
+@media (max-width: 380px) {
+  .transaction-row {
+    grid-template-columns:
+      38px
+      minmax(0, 1fr)
+      18px;
+
+    gap: 8px;
+  }
+
+  .transaction-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .transaction-amount {
+    display: none;
+  }
+
+  .transaction-info strong {
+    font-size: 11px;
+  }
+
+  .transaction-info span {
+    font-size: 9px;
   }
 }
 </style>

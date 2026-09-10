@@ -66,6 +66,7 @@ async function logout() {
 
 <template>
   <aside class="app-sidebar">
+
     <!-- Logo -->
     <div class="sidebar-header">
       <div class="logo-icon">
@@ -83,6 +84,7 @@ async function logout() {
     <!-- Main Navigation -->
     <nav class="sidebar-nav">
       <div class="nav-section">
+
         <span class="section-title">
           MENU
         </span>
@@ -102,11 +104,13 @@ async function logout() {
             @click="navigate(item.to)"
           />
         </v-list>
+
       </div>
     </nav>
 
     <!-- Bottom -->
     <div class="sidebar-bottom">
+
       <v-list
         class="nav-list"
         bg-color="transparent"
@@ -123,9 +127,13 @@ async function logout() {
         />
       </v-list>
 
+      <!-- User -->
       <div class="user-mini-card">
+
         <v-avatar size="38">
-          <v-img src="https://i.pravatar.cc/100?img=47" />
+          <v-img
+            src="https://i.pravatar.cc/100?img=47"
+          />
         </v-avatar>
 
         <div class="user-info">
@@ -145,7 +153,9 @@ async function logout() {
           title="Logout"
           @click="logout"
         />
+
       </div>
+
     </div>
   </aside>
 </template>
@@ -154,17 +164,29 @@ async function logout() {
 .app-sidebar {
   width: 250px;
   height: 100vh;
+  position: sticky;
+  top: 0;
+
   display: flex;
   flex-direction: column;
+
+  flex-shrink: 0;
+
   background: #ffffff;
   border-right: 1px solid #e9eaf0;
+
   padding: 24px 16px;
 }
+
+/* =========================
+   Logo
+========================= */
 
 .sidebar-header {
   display: flex;
   align-items: center;
   gap: 12px;
+
   padding: 0 8px;
   margin-bottom: 40px;
 }
@@ -172,10 +194,15 @@ async function logout() {
 .logo-icon {
   width: 40px;
   height: 40px;
+
+  flex-shrink: 0;
+
   border-radius: 12px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: rgb(var(--v-theme-primary));
   color: white;
 }
@@ -186,16 +213,24 @@ async function logout() {
   color: #111827;
 }
 
+/* =========================
+   Navigation
+========================= */
+
 .sidebar-nav {
   flex: 1;
 }
 
 .section-title {
   display: block;
+
   padding: 0 12px 10px;
+
   font-size: 11px;
   font-weight: 600;
+
   letter-spacing: 0.08em;
+
   color: #9ca3af;
 }
 
@@ -205,13 +240,27 @@ async function logout() {
 
 :deep(.v-list-item) {
   margin-bottom: 4px;
+
   color: #6b7280;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+:deep(.v-list-item:hover) {
+  background: #f7f7fa;
 }
 
 :deep(.v-list-item--active) {
   background: rgba(var(--v-theme-primary), 0.1);
+
   color: rgb(var(--v-theme-primary));
 }
+
+/* =========================
+   Bottom
+========================= */
 
 .sidebar-bottom {
   margin-top: auto;
@@ -221,14 +270,17 @@ async function logout() {
   display: flex;
   align-items: center;
   gap: 10px;
+
   margin-top: 16px;
   padding: 12px 8px;
+
   border-top: 1px solid #e9eaf0;
 }
 
 .user-info {
   min-width: 0;
   flex: 1;
+
   display: flex;
   flex-direction: column;
 }
@@ -236,13 +288,127 @@ async function logout() {
 .user-name {
   font-size: 13px;
   font-weight: 600;
+
   color: #111827;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-email {
   font-size: 11px;
   color: #9ca3af;
+
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 960px) {
+  .app-sidebar {
+    width: 210px;
+    padding: 20px 12px;
+  }
+
+  .sidebar-header {
+    margin-bottom: 28px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 600px) {
+  .app-sidebar {
+    width: 72px;
+
+    padding: 20px 10px;
+
+    align-items: center;
+  }
+
+  /* Logo */
+
+  .sidebar-header {
+    padding: 0;
+    margin-bottom: 28px;
+
+    justify-content: center;
+  }
+
+  .logo-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  /* Section */
+
+  .section-title {
+    display: none;
+  }
+
+  /* Navigation */
+
+  .nav-list {
+    width: 100%;
+  }
+
+  :deep(.v-list-item) {
+    min-height: 46px;
+
+    justify-content: center;
+
+    padding: 0 !important;
+  }
+
+  :deep(.v-list-item__prepend) {
+    margin-inline-end: 0 !important;
+  }
+
+  :deep(.v-list-item__content) {
+    display: none;
+  }
+
+  :deep(.v-list-item__prepend) {
+    margin-inline-start: 0;
+  }
+
+  /* Bottom */
+
+  .sidebar-bottom {
+    width: 100%;
+  }
+
+  .user-mini-card {
+    padding: 12px 0;
+
+    justify-content: center;
+  }
+
+  .user-mini-card .v-avatar {
+    display: none;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .user-mini-card .v-btn {
+    margin: 0;
+  }
 }
 </style>

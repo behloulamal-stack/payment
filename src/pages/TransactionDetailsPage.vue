@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -102,7 +101,7 @@ function sendMoney() {
 <template>
   <div class="details-page">
 
-    <!-- Back button -->
+    <!-- Back -->
     <v-btn
       variant="text"
       prepend-icon="mdi-arrow-left"
@@ -125,7 +124,7 @@ function sendMoney() {
       <span>Loading transaction...</span>
     </div>
 
-    <!-- Transaction not found -->
+    <!-- Not found -->
     <v-card
       v-else-if="!transaction"
       rounded="xl"
@@ -152,13 +151,13 @@ function sendMoney() {
       </v-btn>
     </v-card>
 
-    <!-- Transaction details -->
+    <!-- Details -->
     <template v-else>
 
       <!-- Header -->
       <div class="details-header">
 
-        <div>
+        <div class="header-text">
           <h1>Transaction Details</h1>
 
           <p>
@@ -169,6 +168,7 @@ function sendMoney() {
         <v-chip
           :color="statusColor"
           variant="tonal"
+          class="status-chip"
         >
           <v-icon
             :icon="statusIcon"
@@ -180,7 +180,7 @@ function sendMoney() {
 
       </div>
 
-      <!-- Main transaction card -->
+      <!-- Main Card -->
       <v-card
         rounded="xl"
         class="main-card"
@@ -218,12 +218,11 @@ function sendMoney() {
 
         <v-divider />
 
-        <!-- Transaction information -->
+        <!-- Information -->
         <div class="details-list">
 
           <!-- From / To -->
           <div class="detail-row">
-
             <div class="detail-label">
               <v-icon icon="mdi-account-outline" />
 
@@ -235,12 +234,10 @@ function sendMoney() {
             <strong>
               {{ counterparty }}
             </strong>
-
           </div>
 
           <!-- Description -->
           <div class="detail-row">
-
             <div class="detail-label">
               <v-icon icon="mdi-text-box-outline" />
 
@@ -252,12 +249,10 @@ function sendMoney() {
             <strong>
               {{ transaction.description }}
             </strong>
-
           </div>
 
           <!-- Category -->
           <div class="detail-row">
-
             <div class="detail-label">
               <v-icon icon="mdi-shape-outline" />
 
@@ -269,12 +264,10 @@ function sendMoney() {
             <strong>
               {{ transaction.category || 'Transfer' }}
             </strong>
-
           </div>
 
           <!-- Date -->
           <div class="detail-row">
-
             <div class="detail-label">
               <v-icon icon="mdi-calendar-outline" />
 
@@ -286,12 +279,10 @@ function sendMoney() {
             <strong>
               {{ transaction.date }}
             </strong>
-
           </div>
 
           <!-- Currency -->
           <div class="detail-row">
-
             <div class="detail-label">
               <v-icon icon="mdi-cash-outline" />
 
@@ -303,12 +294,10 @@ function sendMoney() {
             <strong>
               {{ transaction.currency }}
             </strong>
-
           </div>
 
           <!-- Transaction ID -->
           <div class="detail-row">
-
             <div class="detail-label">
               <v-icon icon="mdi-identifier" />
 
@@ -320,11 +309,9 @@ function sendMoney() {
             <strong class="transaction-id">
               {{ transaction.id }}
             </strong>
-
           </div>
 
         </div>
-
       </v-card>
 
       <!-- Actions -->
@@ -351,20 +338,28 @@ function sendMoney() {
       </div>
 
     </template>
-
   </div>
 </template>
 
 <style scoped>
 .details-page {
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
 }
+
+/* =========================
+   Back
+========================= */
 
 .back-button {
   margin-bottom: 20px;
   color: #6b7280;
 }
+
+/* =========================
+   Header
+========================= */
 
 .details-header {
   display: flex;
@@ -372,6 +367,10 @@ function sendMoney() {
   justify-content: space-between;
   gap: 20px;
   margin-bottom: 24px;
+}
+
+.header-text {
+  min-width: 0;
 }
 
 .details-header h1 {
@@ -387,9 +386,21 @@ function sendMoney() {
   color: #9ca3af;
 }
 
+.status-chip {
+  flex-shrink: 0;
+}
+
+/* =========================
+   Main Card
+========================= */
+
 .main-card {
   overflow: hidden;
 }
+
+/* =========================
+   Amount
+========================= */
 
 .amount-section {
   padding: 40px 24px;
@@ -399,7 +410,6 @@ function sendMoney() {
 .transaction-icon {
   width: 64px;
   height: 64px;
-
   margin: 0 auto 14px;
 
   display: flex;
@@ -421,16 +431,15 @@ function sendMoney() {
 
 .type-label {
   display: block;
-
   font-size: 12px;
   color: #9ca3af;
 }
 
 .amount {
   margin: 8px 0 6px;
-
   font-size: 32px;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .amount.income {
@@ -446,6 +455,10 @@ function sendMoney() {
   color: #9ca3af;
 }
 
+/* =========================
+   Details
+========================= */
+
 .details-list {
   padding: 10px 28px;
 }
@@ -456,7 +469,6 @@ function sendMoney() {
   justify-content: space-between;
 
   gap: 24px;
-
   padding: 18px 0;
 
   border-bottom: 1px solid #f0f1f5;
@@ -469,8 +481,9 @@ function sendMoney() {
 .detail-label {
   display: flex;
   align-items: center;
-
   gap: 10px;
+
+  flex-shrink: 0;
 
   color: #9ca3af;
   font-size: 13px;
@@ -496,14 +509,20 @@ function sendMoney() {
   font-size: 12px !important;
 }
 
+/* =========================
+   Actions
+========================= */
+
 .actions {
   display: flex;
   justify-content: flex-end;
-
   gap: 10px;
-
   margin-top: 20px;
 }
+
+/* =========================
+   States
+========================= */
 
 .state-container {
   min-height: 400px;
@@ -521,7 +540,6 @@ function sendMoney() {
 
 .not-found-card {
   padding: 50px 30px;
-
   text-align: center;
 }
 
@@ -543,49 +561,109 @@ function sendMoney() {
 
 .not-found-card h2 {
   margin-bottom: 8px;
-
   color: #111827;
 }
 
 .not-found-card p {
   margin-bottom: 24px;
-
   color: #9ca3af;
   font-size: 13px;
 }
 
-@media (max-width: 600px) {
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 700px) {
   .details-header {
     align-items: flex-start;
-    flex-direction: column;
   }
 
-  .amount-section {
-    padding: 32px 20px;
+  .details-header h1 {
+    font-size: 21px;
   }
 
-  .amount {
-    font-size: 27px;
+  .details-header p {
+    font-size: 12px;
   }
 
   .details-list {
-    padding: 8px 18px;
+    padding: 8px 20px;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 600px) {
+  .back-button {
+    margin-bottom: 14px;
+  }
+
+  .details-header {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .status-chip {
+    align-self: flex-start;
+  }
+
+  .amount-section {
+    padding: 30px 16px;
+  }
+
+  .transaction-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+  }
+
+  .amount {
+    font-size: 25px;
+  }
+
+  .details-list {
+    padding: 6px 16px;
   }
 
   .detail-row {
     align-items: flex-start;
+    gap: 14px;
+    padding: 16px 0;
+  }
+
+  .detail-label {
+    gap: 7px;
+    font-size: 12px;
+  }
+
+  .detail-label .v-icon {
+    font-size: 17px;
   }
 
   .detail-row strong {
-    max-width: 50%;
+    max-width: 52%;
+    font-size: 12px;
+  }
+
+  .transaction-id {
+    font-size: 10px !important;
   }
 
   .actions {
     flex-direction: column-reverse;
+    gap: 8px;
   }
 
   .actions .v-btn {
     width: 100%;
+  }
+
+  .not-found-card {
+    padding: 40px 20px;
   }
 }
 </style>
