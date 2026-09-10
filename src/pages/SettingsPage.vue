@@ -1,19 +1,50 @@
-<script setup lang="ts">
-import { ref } from 'vue'
 
-const fullName = ref('Amel Behloul')
-const email = ref('amel@example.com')
-const phone = ref('+213 555 000 000')
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
+import { useAuthStore } from '@/stores/auth.store'
+
+const authStore = useAuthStore()
+
+const fullName = ref('')
+const email = ref('')
+const phone = ref('')
 const currency = ref('DZD')
 const notifications = ref(true)
 
+onMounted(() => {
+  if (authStore.user) {
+    fullName.value = authStore.user.fullName
+    email.value = authStore.user.email
+    phone.value = authStore.user.phone
+  }
+
+  const savedSettings =
+    localStorage.getItem('payflow_settings')
+
+  if (savedSettings) {
+    const settings = JSON.parse(savedSettings)
+
+    currency.value = settings.currency
+    notifications.value = settings.notifications
+  }
+})
+
 function saveSettings() {
+  if (!authStore.user) return
+
+  authStore.user.fullName = fullName.value
+  authStore.user.email = email.value
+  authStore.user.phone = phone.value
+
+  localStorage.setItem(
+    'payflow_user',
+    JSON.stringify(authStore.user),
+  )
+
   localStorage.setItem(
     'payflow_settings',
     JSON.stringify({
-      fullName: fullName.value,
-      email: email.value,
-      phone: phone.value,
       currency: currency.value,
       notifications: notifications.value,
     }),
